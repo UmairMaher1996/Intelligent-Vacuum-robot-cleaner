@@ -1,0 +1,19 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="spacing" default="0.4" />
+  <arg name="open_rviz" default="true"/>
+  <arg name="move_forward_only" default="true"/>
+  <arg name="map" default="$(find rv)/maps/map_p3_1.yaml"/>
+
+  <!-- ROBOT VACUUM -->
+
+  <!-- Map server -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map)"/>
+
+  <!-- Pathplanning -->
+  <node name="path_planner" pkg="rv" type="path_planner.py" respawn="false" output="screen" >
+    <param name="coverage_spacing" value="$(arg spacing)" />
+  </node>
+
+
+</launch>

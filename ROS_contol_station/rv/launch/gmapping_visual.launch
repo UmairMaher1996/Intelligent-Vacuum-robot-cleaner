@@ -1,0 +1,9 @@
+<launch>
+
+<include file="/home/umair/catkin_ws/src/rv/launch/include/gmapping.launch"/>
+	
+<node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop"/>
+
+<node pkg="rviz" type="rviz" name="rviz" args="-d $(find rv)/rviz/config_file.rviz"/>
+
+</launch>

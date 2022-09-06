@@ -1,0 +1,44 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="spacing" default="0.2" />
+  <arg name="open_rviz" default="true"/>
+  <arg name="move_forward_only" default="true"/>
+  <arg name="map" default="$(find rv)/maps/map.yaml"/>
+
+  <!-- ROBOT VACUUM -->
+
+  <!-- Map server--> 
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map)"/>
+   
+
+<!-- Pathplanning 
+  <node name="path_planner" pkg="rv" type="path_planner.py" respawn="false" output="screen"> 
+    <param name="coverage_spacing" value="$(arg spacing)" />
+  </node>
+
+ 
+
+-->
+
+<node pkg="heatmap" type="path_planner.py" name="path" respawn="false" output="screen" >
+  	<param name="coverage_spacing" value="$(arg spacing)" />
+  </node>
+  <node pkg="heatmap" type="heatmap_client" name="heatmap" respawn="false" output="screen"/>
+ 
+ 
+
+  <!--Launch AMCL -->
+  <include file="$(find rv)/launch/amcl.launch"/> 
+
+  <!--Launch Move-Base -->
+  <include file="$(find rv)/launch/move_base.launch">
+   <!-- <arg name="move_forward_only" value="$(arg move_forward_only)"/> -->
+  </include>
+
+  <!--Launch RVIZ -->
+  <group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find rv)/rviz/rv_navigation_CPP.rviz"/>
+  </group>
+
+</launch>
